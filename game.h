@@ -10,11 +10,8 @@
 */
 
 #include <QWidget>
-#include <QVector>
-#include <QPoint>
 #include <QKeyEvent>
-
-
+#include "CSnake.h"
 
 
 // В этом классе описываем логику игры
@@ -32,49 +29,20 @@ private:
     
     // все действия нужно выполнять по таймеру
     // для этого заведем переменную
-    static const int DELAY = 160;       // 150 мс
+    static const int DELAY = 250;       // 250 мс
     
     
+    void doDrawing();   // отрисовка объектов
+    void localApple();  // расположение яблока на игровом поле
+    void gameOver();    // конец игры
+    void initGame();    // функция инициализации игры
     
-    void doDrawing();
-    void localApple();
-    void move();
-    void check_collision();
-    void gameOver();
-    void check_apple();
+    int m_timerId;      // таймер
+    bool m_inGame;      // состояние игры
     
-    
-    int m_timerId;
-    
-    
-    QPoint m_apple; // информация о яблоке
-    
-    
-    
-    // перечисление всех возможных вариантов
-    // движения змейки
-    enum Directions
-    {
-        left, right, up, down
-    };
-    
-    Directions m_dir;
-    
-    
-    
-    bool m_inGame;
-    
-    // переменная, которая хранит инф-цию о всех точках змейки
-    QVector<QPoint> m_dots;
-    
-    
-    // функция инициализации игры
-    void initGame();
-    
+    CSnake snake;       // змейка
+    QPoint m_apple;     // информация о яблоке
 public:
-    // зачем мы внутрь конструктора
-    // передаем указатель на QWidget ?
-    Game(QWidget* parent);
     Game();
 protected:
     void timerEvent(QTimerEvent*) override;
@@ -85,16 +53,5 @@ protected:
     // как только нужно отрисовать виджет, вызывается этот слот
     void paintEvent(QPaintEvent* event) override; // слот
 };
-
-
-
-
-
-
-
-
-
-
-
 
 #endif // GAME_H
