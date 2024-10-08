@@ -1,6 +1,6 @@
 #include "game.h"
 #include <QDebug>
-#include <QPainter>
+//#include <QPainter>
 #include <QMessageBox>
 
 Game::Game()
@@ -54,10 +54,10 @@ void Game::paintEvent(QPaintEvent *e)
 
 
 void Game::doDrawing()
-{
+{ 
     // яблоко
-    // QPixmap appleImage;
-    // appleImage.load("C:\forStudy\\QtProjects\\Snake\apple.png");
+    QPixmap appleImage;
+    appleImage.load("C:\\forStudy\\QtProjects\\Snake\\apple.png");
     
     QPainter qp(this);
     QVector<QPoint> dots = snake.get_dots();
@@ -66,17 +66,14 @@ void Game::doDrawing()
     if (m_inGame)
     {
         // рисуем яблоко
-        qp.setBrush(Qt::red);
-        qp.drawEllipse(m_apple.x() * DOT_WIDTH, m_apple.y() * DOT_HEIGHT, DOT_WIDTH, DOT_HEIGHT);
-        
+        qp.drawPixmap(m_apple.x() * DOT_WIDTH, m_apple.y() * DOT_HEIGHT, appleImage);
         
         // рисуем змейку
         for (int i = 0; i < dots.size(); i++)
         {
             if (i == 0) // голова
             {
-                qp.setBrush(QBrush(QColor(8, 163, 145)));
-                qp.drawEllipse(dots[i].x() * DOT_WIDTH, dots[i].y() * DOT_HEIGHT, DOT_WIDTH, DOT_HEIGHT);
+                qp.drawPixmap(dots[i].x() * DOT_WIDTH, dots[i].y() * DOT_HEIGHT, snake.get_headSnake());
             }
             else // тело змейки
             {
@@ -96,8 +93,8 @@ void Game::doDrawing()
 void Game::localApple()
 {
     srand(time(NULL));  
-    m_apple.setX(rand() % (DOT_WIDTH - 1));
-    m_apple.setY(rand() % (DOT_HEIGHT - 1));   
+    m_apple.setX(rand() % (DOT_WIDTH - 1) + 1);
+    m_apple.setY(rand() % (DOT_HEIGHT - 1) + 1);   
 }
 
 

@@ -17,6 +17,19 @@ CSnake::CSnake()
         m_dots[i].setX(m_dots.size() - i - 1);
         m_dots[i].setY(0);
     }
+    
+    m_headSnake.load("C:\\forStudy\\QtProjects\\Snake\\headSnake.png");
+}
+
+
+QPixmap CSnake::get_headSnake()
+{
+    return m_headSnake;
+}
+
+void CSnake::set_headSnake(QPixmap headSnake)
+{
+    m_headSnake = headSnake;
 }
 
 
@@ -98,15 +111,72 @@ bool CSnake::check_apple(QPoint apple)
 
 void CSnake::change_direction(int key)
 {
-    if (key == Qt::Key_Left && m_dir != Directions::right)
-        m_dir = Directions::left;   
+    // для поворота головы
+    QTransform tr;    
     
-    if (key == Qt::Key_Right && m_dir != Directions::left)
-        m_dir = Directions::right;
     
-    if (key == Qt::Key_Up && m_dir != Directions::down)
-        m_dir = Directions::up;
+    if (key == Qt::Key_Left && m_dir != right)
+    {
+        switch (m_dir) { 
+        case up:
+            tr.rotate(-90);
+            m_headSnake = m_headSnake.transformed(tr);
+            break;
+        case down:
+            tr.rotate(90);
+            m_headSnake = m_headSnake.transformed(tr);
+        default:
+            break;
+        }
+        m_dir = left;
+    }
     
-    if (key == Qt::Key_Down && m_dir != Directions::up)
-        m_dir = Directions::down;
+    if (key == Qt::Key_Right && m_dir != left)
+    {
+        switch (m_dir) { 
+        case up:
+            tr.rotate(90);
+            m_headSnake = m_headSnake.transformed(tr);
+            break;
+        case down:
+            tr.rotate(-90);
+            m_headSnake = m_headSnake.transformed(tr);
+        default:
+            break;
+        }   
+        m_dir = right;
+    }
+    
+    if (key == Qt::Key_Up && m_dir != down)
+    {
+        switch (m_dir) { 
+        case right:
+            tr.rotate(-90);
+            m_headSnake = m_headSnake.transformed(tr);
+            break;
+        case left:
+            tr.rotate(90);
+            m_headSnake = m_headSnake.transformed(tr);
+        default:
+            break;
+        }
+        m_dir = up;
+    }
+    
+    if (key == Qt::Key_Down && m_dir != up)
+    {
+        switch (m_dir) { 
+        case right:
+            tr.rotate(90);
+            m_headSnake = m_headSnake.transformed(tr);
+            break;
+        case left:
+            tr.rotate(-90);
+            m_headSnake = m_headSnake.transformed(tr);
+            break;
+        default:
+            break;
+        }
+        m_dir = down;
+    }
 }
